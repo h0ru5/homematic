@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/h0ru5/homematic",
   "dependencies": {
-    "request-promise": "0.0.4"
+    "request-promise": "0.0.4",
+    "bluebird": "^2.3.0",
+    "xml2js": "^0.4.4"
   }
 }
