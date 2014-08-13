@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/h0ru5/homematic",
   "dependencies": {
-    "request": "^2.40.0"
+    "request-promise": "0.0.4"
   }
 }
