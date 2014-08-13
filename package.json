@@ -1,0 +1,25 @@
+{
+  "name": "homematic",
+  "version": "0.0.0",
+  "description": "client to interface with a homematic CCU via XML-API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/h0ru5/homematic.git"
+  },
+  "keywords": [
+    "homematic"
+  ],
+  "author": "h0ru5 (johannes.hund@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/h0ru5/homematic/issues"
+  },
+  "homepage": "https://github.com/h0ru5/homematic",
+  "dependencies": {
+    "request": "^2.40.0"
+  }
+}
