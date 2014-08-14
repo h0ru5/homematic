@@ -4,7 +4,8 @@
   "description": "client to interface with a homematic CCU via XML-API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"prepublish": "coffee -o lib/ src/"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,8 @@
     "request-promise": "0.0.4",
     "bluebird": "^2.3.0",
     "xml2js": "^0.4.4"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.7.1"
   }
 }

@@ -15,3 +15,6 @@ parseXml = (xml) ->
 
 module.exports.getStates = (addr,cb) ->
 	rq(urlOf(addr,'statelist')).then parseXml
+
+module.exports.getPrograms = (addr,cb) ->
+	rq(urlOf(addr,'programlist')).then parseXml
