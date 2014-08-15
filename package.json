@@ -23,9 +23,14 @@
   "dependencies": {
     "request-promise": "0.0.4",
     "bluebird": "^2.3.0",
-    "xml2js": "^0.4.4"
+    "xml2js": "^0.4.4",
+    "gulp": "^3.8.7",
+    "gulp-coffee": "^2.1.1"
   },
   "devDependencies": {
-    "coffee-script": "^1.7.1"
+    "coffee-script": "^1.7.1",
+    "chai": "^1.9.1",
+    "rewire": "^2.1.0",
+    "gulp-mocha": "^1.0.0"
   }
 }

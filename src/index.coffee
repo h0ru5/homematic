@@ -6,17 +6,16 @@ Promise.promisifyAll require('xml2js');
 
 lists=['devicelist','functionslist','sysvarlist','statelist','programlist','favoritelist','roomlist'];
 
-urlOf = (host,script) ->
+urlOf = (host,script,vars) ->
 	"http://#{host}/config/xmlapi/#{script}.cgi"
 
 parseXml = (xml) ->
 	xml2js.parseStringAsync xml
 
-
 module.exports.getStates = (addr,raw) ->
 	res = rq(urlOf(addr,'statelist')).then parseXml
 	if raw then return res
-	res.then parseStates
+	else res.then parseStates
 
 module.exports.parseStates = parseStates = (result) ->
 	res = []
@@ -29,6 +28,22 @@ module.exports.parseStates = parseStates = (result) ->
 				res[devidx].channels[chidx].datapoints[dpidx] = dp.$;
 	return res
 
+module.exports.parseProgs = parseProgs = (result) ->
+	res = []
+	result.programList.program.forEach (prog) ->
+		res.push {
+			'id' : prog.$.id
+			'name' : prog.$.name
+		}
+	return res
 
-module.exports.getPrograms = (addr) ->
-	rq(urlOf(addr,'programlist')).then parseXml
+module.exports.getPrograms = (addr,raw) ->
+	res = rq(urlOf(addr,'programlist')).then parseXml
+	if raw then return res
+	else res.then parseProgs
+
+module.exports.runProgram = (addr,id) ->
+	rq {
+			url : urlOf(addr,'runprogram')
+			qs : {'program_id' : id }
+		}
