@@ -6,8 +6,10 @@ Promise.promisifyAll require('xml2js');
 
 lists=['devicelist','functionslist','sysvarlist','statelist','programlist','favoritelist','roomlist'];
 
-urlOf = (host,script,vars) ->
-	"http://#{host}/config/xmlapi/#{script}.cgi"
+urlOf = (host,script,vars,method='GET') ->
+			res =
+				'qs' : vars
+				'url' : "http://#{host}/config/xmlapi/#{script}.cgi"
 
 parseXml = (xml) ->
 	xml2js.parseStringAsync xml
@@ -43,7 +45,4 @@ module.exports.getPrograms = (addr,raw) ->
 	else res.then parseProgs
 
 module.exports.runProgram = (addr,id) ->
-	rq {
-			url : urlOf(addr,'runprogram')
-			qs : {'program_id' : id }
-		}
+	rq urlOf(addr,'runprogram', {'program_id' : id })
