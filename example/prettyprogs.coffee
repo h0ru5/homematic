@@ -16,5 +16,6 @@ hm.getPrograms url, false
 	result.forEach (prog) ->
 		if pid==-1 then pid = prog.id
 		console.log "#{prog.id}: #{prog.name}"
-
-hm.runProgram url,pid
+	hm.runProgram url,pid
+	.then ->
+		console.log "running #{pid}"
