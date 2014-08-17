@@ -66,10 +66,7 @@ describe 'calling the lib against the server mock', ->
 
 
 	it 'should return a parsed program list when calling getprograms', (cb) ->
-		parsedprogs = [
-			{ id: '1681', name: 'first program' },
-  			{ id: '1653', name: 'second program' }
-		]
+		parsedprogs = JSON.parse fs.readFileSync("#{__dirname}/resources/parsedprogs.json",'UTF-8')
 
 		hm.getPrograms(ccu, false)
 		.then (result) ->
@@ -78,7 +75,7 @@ describe 'calling the lib against the server mock', ->
 		.catch (err) ->
 			cb err
 
-	it 'should return the xml for getPrograms with raw flag' , (cb) ->
+	it 'should return the xml as object for getPrograms with raw flag' , (cb) ->
 		fname = path.join __dirname, "resources/programlist.xml"
 		xml = fs.readFileSync fname, 'UTF-8'
 
