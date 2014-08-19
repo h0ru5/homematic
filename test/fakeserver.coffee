@@ -21,11 +21,11 @@ fakeSrv = (req, resp) ->
 			if tok[1] is 'config' && tok[2] is 'xmlapi'
 				switch tok[3]
 					when 'programlist.cgi'
-						resp.writeHead 200
 						resp.end readFile('programlist.xml')
 						#readFile('programlist.xml').pipe resp
 					when 'statelist.cgi'
-						readFile('statelist.xml').pipe resp
+						resp.end readFile('statelist.xml')
+						#readFile('statelist.xml').pipe resp
 					else
 						throw new Error('unkown script')
 			else
@@ -87,5 +87,24 @@ describe 'calling the lib against the server mock', ->
 			.catch (err) ->
 				cb err
 
+	it 'should return a parsed state list when calling getStates', (cb) ->
+		parsedstates = JSON.parse fs.readFileSync("#{__dirname}/resources/parsedstates.json",'UTF-8')
 
+		hm.getStates(ccu, false)
+		.then (result) ->
+			result.should.deep.equal parsedstates
+			cb()
+		.catch (err) ->
+			cb err
 
+	it 'should return the xml as object for getStates with raw flag' , (cb) ->
+		fname = path.join __dirname, "resources/statelist.xml"
+		xml = fs.readFileSync fname, 'UTF-8'
+
+		xml2js.parseStringAsync(xml).then (expectation) ->
+			hm.getStates(ccu, true)
+			.then (result) ->
+				result.should.deep.equal expectation
+				cb()
+			.catch (err) ->
+				cb err
