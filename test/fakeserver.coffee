@@ -10,7 +10,6 @@ chai.should()
 chai.use require('chai-subset')
 chai.use require('chai-as-promised')
 
-
 hm = require '../lib/index'
 
 ccu='localhost:4000'
@@ -18,7 +17,7 @@ lastprog = -1
 
 readFile = (fname) ->
 	fpath = path.join __dirname, "resources/#{fname}"
-	fs.readFileSync fpath
+	fs.createReadStream fpath
 
 fakeSrv = (req, resp) ->
 			urlpath = url.parse(req.url).pathname
@@ -26,11 +25,9 @@ fakeSrv = (req, resp) ->
 			if tok[1] is 'config' && tok[2] is 'xmlapi'
 				switch tok[3]
 					when 'programlist.cgi'
-						resp.end readFile('programlist.xml')
-						#readFile('programlist.xml').pipe resp
+						readFile('programlist.xml').pipe resp
 					when 'statelist.cgi'
-						resp.end readFile('statelist.xml')
-						#readFile('statelist.xml').pipe resp
+						readFile('statelist.xml').pipe resp
 					when 'runprogram.cgi'
 						progid =  url.parse(req.url,true).query['program_id']
 						lastprog = progid
