@@ -4,12 +4,17 @@ url = require 'url'
 path = require 'path'
 fs = require 'fs'
 xml2js = require 'xml2js'
-expect = require('chai').expect
-should = require('chai').should()
+chai = require('chai')
+expect = chai.expect
+chai.should()
+chai.use require('chai-subset')
+chai.use require('chai-as-promised')
+
 
 hm = require '../lib/index'
 
 ccu='localhost:4000'
+lastprog = -1
 
 readFile = (fname) ->
 	fpath = path.join __dirname, "resources/#{fname}"
@@ -26,8 +31,12 @@ fakeSrv = (req, resp) ->
 					when 'statelist.cgi'
 						resp.end readFile('statelist.xml')
 						#readFile('statelist.xml').pipe resp
+					when 'runprogram.cgi'
+						progid =  url.parse(req.url,true).query['program_id']
+						lastprog = progid
+						resp.end()
 					else
-						throw new Error('unkown script')
+						throw new Error("unkown script: #{tok[3]}")
 			else
 				#return first token as status
 				status = parseInt tok[1]
@@ -70,8 +79,21 @@ describe 'calling the lib against the server mock', ->
 
 		hm.getPrograms(ccu, false)
 		.then (result) ->
-			result.should.deep.equal parsedprogs
+			#result.should.deep.equal parsedprogs
+			result.forEach (obj,idx) ->
+				obj.should.containSubset(parsedprogs[idx])
 			cb()
+		.catch (err) ->
+			cb err
+
+	it 'should run the first program in the list', (cb) ->
+		parsedprogs = JSON.parse fs.readFileSync("#{__dirname}/resources/parsedprogs.json",'UTF-8')
+
+		hm.getPrograms(ccu, false)
+		.then (result) ->
+			result[0].run().then ->
+				lastprog.should.equal result[0].id
+				cb()
 		.catch (err) ->
 			cb err
 

@@ -21,7 +21,6 @@ module.exports.getStates = (addr,raw) ->
 
 module.exports.parseStates = parseStates = (result) ->
 	res = []
-	console.log 'entering state parser'
 	result.stateList.device.forEach (dev,devidx) ->
 		res[devidx] = { "id" : dev.$.ise_id, "name" : dev.$.name, channels : [] }
 		dev.channel.forEach (channel,chidx) ->
@@ -30,19 +29,23 @@ module.exports.parseStates = parseStates = (result) ->
 				res[devidx].channels[chidx].datapoints[dpidx] = dp.$;
 	return res
 
-module.exports.parseProgs = parseProgs = (result) ->
-	res = []
-	result.programList.program.forEach (prog) ->
-		res.push {
-			'id' : prog.$.id
-			'name' : prog.$.name
-		}
-	return res
+module.exports.parseProgs = parseProgs = (addr) ->
+	(result) ->
+		res = []
+		result.programList.program.forEach (prog) ->
+			res.push {
+				"addr" : addr
+				"id" : prog.$.id
+				"name" : prog.$.name
+				"run" : ->
+					return module.exports.runProgram @addr,@id
+			}
+		return res
 
 module.exports.getPrograms = (addr,raw) ->
 	res = rq(urlOf(addr,'programlist')).then parseXml
 	if raw then return res
-	else res.then parseProgs
+	else res.then parseProgs(addr)
 
 module.exports.runProgram = (addr,id) ->
 	rq urlOf(addr,'runprogram', {'program_id' : id })
