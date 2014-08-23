@@ -14,6 +14,7 @@ hm = require '../lib/homematic'
 
 ccu='localhost:4000'
 lastprog = -1
+dp = {}
 
 readFile = (fname) ->
 	fpath = path.join __dirname, "resources/#{fname}"
@@ -32,8 +33,13 @@ fakeSrv = (req, resp) ->
 						progid =  url.parse(req.url,true).query['program_id']
 						lastprog = progid
 						resp.end()
+					when 'statechange.cgi'
+						ise_id = url.parse(req.url,true).query['ise_id']
+						new_value = url.parse(req.url,true).query['new_value']
+						dp[ise_id]=new_value
+						resp.end "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" ?><result><changed id=\"#{ise_id}\" new_value=\"#{new_value}\" /></result>"
 					else
-						throw new Error("unkown script: #{tok[3]}")
+						throw new Error("unkown cgi script called: #{tok[3]}")
 			else
 				#return first token as status
 				status = parseInt tok[1]
@@ -78,7 +84,7 @@ describe 'calling the lib against the server mock', ->
 		.then (result) ->
 			#result.should.deep.equal parsedprogs
 			result.forEach (obj,idx) ->
-				obj.should.containSubset(parsedprogs[idx])
+				obj.should.containSubset parsedprogs[idx]
 			cb()
 		.catch (err) ->
 			cb err
@@ -111,7 +117,8 @@ describe 'calling the lib against the server mock', ->
 
 		hm.getStates(ccu, false)
 		.then (result) ->
-			result.should.deep.equal parsedstates
+			result.forEach (obj,idx) ->
+				obj.should.containSubset parsedstates[idx]
 			cb()
 		.catch (err) ->
 			cb err
