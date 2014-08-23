@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
 	coffee = require('gulp-coffee'),
-	mocha = require('gulp-mocha');
+	mocha = require('gulp-mocha'),
+	browserify = require('gulp-browserify');
 
 
 var paths = {
@@ -26,6 +27,16 @@ gulp.task('test',['lib'],function() {
 		.pipe(coffee({bare:true}))
 		.pipe(gulp.dest('test'))
 		.pipe(mocha());
+});
+
+gulp.task('browserify',['lib'],function() {
+	return gulp.src(paths.libsrc)
+		.pipe(coffee({bare : true}))
+		.pipe(browserify({
+			standalone : 'homematic'
+		}))
+		.pipe(gulp.dest('./browser/'));
+
 });
 
 gulp.task('watch',function() {

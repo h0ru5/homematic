@@ -1,0 +1,34 @@
+<html>
+
+<head>
+	<title>Homematic module</title>
+</head>
+
+<body>
+	<h1>calling Homematic</h1>
+
+	<pre id="output"></pre>
+
+	<script type="text/javascript" src="homematic.js"></script>
+	<script type="text/javascript">
+		var putout = function (obj) {
+			document.querySelector('#output').innerText += JSON.stringify(obj, undefined, 2) + '\n';
+		}
+
+		homematic.getPrograms('192.168.178.20')
+			.then(function (progs) {
+				putout(progs);
+				console.dir(progs);
+			})
+			.catch(console.error);
+
+		homematic.getStates('192.168.178.20')
+			.then(function (states) {
+				console.dir(states);
+				putout(states);
+			})
+			.catch(console.error);
+	</script>
+</body>
+
+</html>

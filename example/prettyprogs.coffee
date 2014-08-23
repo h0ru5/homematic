@@ -1,4 +1,4 @@
-hm = require '../lib/index'
+hm = require '../lib/homematic'
 
 url = '192.168.178.20'
 pid = -1

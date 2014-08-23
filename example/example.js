@@ -1,4 +1,4 @@
-var hm = require('../lib/index');
+var hm = require('../lib/homematic');
 
 hm.getStates('192.168.178.20')
 	.then(console.dir)

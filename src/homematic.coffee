@@ -10,6 +10,7 @@ urlOf = (host,script,vars,method='GET') ->
 			res =
 				'qs' : vars
 				'url' : "http://#{host}/config/xmlapi/#{script}.cgi"
+				'withCredentials' : false
 
 parseXml = (xml) ->
 	xml2js.parseStringAsync xml

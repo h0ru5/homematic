@@ -1,4 +1,4 @@
-hm = require '../lib/index'
+hm = require '../lib/homematic'
 
 hm.getStates('192.168.178.20')
 .then (result) ->
