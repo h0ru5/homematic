@@ -50,3 +50,31 @@ module.exports.getPrograms = (addr,raw) ->
 
 module.exports.runProgram = (addr,id) ->
 	rq urlOf(addr,'runprogram', {'program_id' : id })
+
+module.exports.setState = (addr, ise, value) ->
+	rq urlOf(addr,'statechange', {
+		'ise_id' : ise
+		'new_value': value
+								 })
+
+module.exports.getDataPoints = (addr) ->
+	res = []
+	idx=0
+
+	rq(urlOf(addr,'statelist'))
+		.then parseXml
+		.then (stateTree) ->
+			stateTree.stateList.device.forEach (dev) ->
+				dev.channel.forEach (channel) ->
+					channel.datapoint.forEach (dp) ->
+						res.push
+							'ccu' : addr
+							'device' : dev.$.name
+							'channel' : channel.$.name
+							'id' : dp.$.ise_id
+							'type' : dp.$.type
+							'timestamp' : dp.$.timestamp
+							'value' : dp.$.value #todo: type according to valuetype
+							'set' : (newValue) ->
+								module.exports.setState @ccu,@id,newValue
+			return res

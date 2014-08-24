@@ -134,3 +134,34 @@ describe 'calling the lib against the server mock', ->
 				cb()
 			.catch (err) ->
 				cb err
+
+	it 'should set a new state for ise 123', (cb) ->
+
+		hm.setState(ccu,123,0.8)
+		.then (result) ->
+			dp['123'].should.equal(0.8 + '')
+			cb()
+		.catch (err) ->
+			cb err
+
+	it 'should return an array of datapoints', (cb) ->
+		parsedDps = JSON.parse fs.readFileSync("#{__dirname}/resources/datapoints.json",'UTF-8')
+		hm.getDataPoints(ccu)
+		.then (result) ->
+			result.forEach (obj,idx) ->
+				obj.should.containSubset parsedDps[idx]
+			cb()
+		.catch (err) ->
+			cb err
+
+	it 'should set a new state for the first datapoint', (cb) ->
+		hm.getDataPoints(ccu)
+		.then (result) ->
+			myDp = result[0]
+			oV = myDp.value
+			nV = 0.5*oV
+			myDp.set(nV).then ->
+				dp[myDp.id].should.equal(nV+'')
+			cb()
+		.catch (err) ->
+			cb err
