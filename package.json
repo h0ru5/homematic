@@ -1,11 +1,11 @@
 {
   "name": "homematic",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "client to interface with a homematic CCU via XML-API",
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
-    "prepublish": "coffee -o lib/ src/; gulp browserify"
+    "prepublish": "gulp lib browserify"
   },
   "repository": {
     "type": "git",
@@ -23,12 +23,12 @@
   "dependencies": {
     "request-promise": "0.0.4",
     "bluebird": "^2.3.0",
-    "xml2js": "^0.4.4",
-    "gulp": "^3.8.7",
-    "gulp-coffee": "^2.1.1"
+    "xml2js": "^0.4.4"
   },
   "devDependencies": {
     "coffee-script": "^1.7.1",
+    "gulp": "^3.8.7",
+    "gulp-coffee": "^2.1.1",
     "chai": "^1.9.1",
     "rewire": "^2.1.0",
     "gulp-mocha": "^1.0.0",
