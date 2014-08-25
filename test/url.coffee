@@ -1,6 +1,6 @@
 expect = require('chai').expect
 rewire = require 'rewire'
-uut = rewire('../lib/index').__get__('urlOf')
+uut = rewire('../lib/homematic').__get__('urlOf')
 
 
 
