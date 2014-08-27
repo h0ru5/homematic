@@ -17,7 +17,7 @@
 	"license": "MIT",
 	"ignore": [
   	"**/*",
- 	"!dist/bower"
+ 	"!dist/bower/homematic.js"
   ],
 	"repository": {
 		"type": "git",
