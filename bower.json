@@ -1,0 +1,27 @@
+{
+	"name": "homematic",
+	"version": "0.0.1",
+	"homepage": "https://github.com/h0ru5/homematic",
+	"authors": [
+    "h0ru5 <johannes.hund@gmail.com>"
+  ],
+	"description": "facade api to access the XML API of a HomeMatic CCU",
+	"main": "homematic.js",
+	"moduleType": [
+    "globals"
+  ],
+	"keywords": [
+    "homematic",
+    "xml"
+  ],
+	"license": "MIT",
+	"ignore": [
+  	"**/*",
+ 	"!dist/bower"
+  ],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/h0ru5/homematic.git"
+	},
+	"main" : "homematic.js"
+}

@@ -13,7 +13,7 @@ var paths = {
 gulp.task('lib', function() {
 	return gulp.src(paths.libsrc)
 		.pipe(coffee({bare:true}))
-		.pipe(gulp.dest('lib'))
+		.pipe(gulp.dest('dist/npm'))
 });
 
 gulp.task('examples', function() {
@@ -35,7 +35,7 @@ gulp.task('browserify',['lib'],function() {
 		.pipe(browserify({
 			standalone : 'homematic'
 		}))
-		.pipe(gulp.dest('./browser/'));
+		.pipe(gulp.dest('dist/bower'));
 
 });
 
