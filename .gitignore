@@ -26,3 +26,4 @@ node_modules
 lib/*
 test/*.js
 /browser/homematic.js
+dist/bower
