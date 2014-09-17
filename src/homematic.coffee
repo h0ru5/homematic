@@ -11,6 +11,7 @@ urlOf = (host,script,vars,method='GET') ->
 				'qs' : vars
 				'url' : "http://#{host}/config/xmlapi/#{script}.cgi"
 				'withCredentials' : false
+				'scheme' : 'http' #a bug in browserify?
 
 parseXml = (xml) ->
 	xml2js.parseStringAsync xml
@@ -57,6 +58,17 @@ module.exports.setState = (addr, ise, value) ->
 		'new_value': value
 								 })
 
+module.exports.getState = (addr,id) ->
+	rq urlOf(addr,'state', {
+		'datapoint_id' : id
+		})
+	.then parseXml
+	.then (res) ->
+		if not res.state.datapoint? || res.state.datapoint.length == 0
+			throw 'empty resp'
+		res.state.datapoint[0].$.value
+
+
 module.exports.getDataPoints = (addr) ->
 	res = []
 	idx=0
@@ -77,4 +89,6 @@ module.exports.getDataPoints = (addr) ->
 							'value' : dp.$.value #todo: type according to valuetype
 							'set' : (newValue) ->
 								module.exports.setState @ccu,@id,newValue
+							'update' : () ->
+								value = module.exports.getState @ccu,@id
 			return res
