@@ -1,4 +1,4 @@
-hm = require '../lib/homematic'
+hm = require '../dist/npm/homematic'
 
 url = '192.168.178.20'
 pid = -1

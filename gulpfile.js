@@ -56,8 +56,8 @@ gulp.task('browserify', ['lib'], function () {
 gulp.task('bower-repo', function (cb) {
 	fs.exists('dist/bower', function (exists) {
 		if (!exists) {
-			git.clone('https://github.com/h0ru5/homematic-bower.git', {
-				args: 'dist/bower'
+			git.clone('git@github.com:h0ru5/homematic-bower.git', {
+				args: '--tags dist/bower'
 			}, cb);
 		} else {
 			git.pull('origin', 'master', {
@@ -78,7 +78,8 @@ gulp.task('compile-bower', ['bower-repo'], function () {
 			bare: true
 		}))
 		.pipe(browserify({
-			standalone: 'homematic'
+			standalone: 'homematic',
+			debug : true
 		}))
 		.pipe(uglify())
 		.pipe(sourcemaps.write('./'))
@@ -92,7 +93,7 @@ gulp.task('bump-bower', ['bower-repo'], function () {
 });
 
 
-gulp.task('commit-bower', ['compile-bower'], function () {
+gulp.task('commit-bower', ['compile-bower','bump-bower'], function () {
 	gulp.src('dist/bower/*')
 		.pipe(git.add({
 			cwd: 'dist/bower'
@@ -102,7 +103,7 @@ gulp.task('commit-bower', ['compile-bower'], function () {
 		}))
 });
 
-gulp.task('publish-bower', ['commit-bower', 'bump-bower'], function (cb) {
+gulp.task('publish-bower', ['commit-bower'], function (cb) {
 	var version = JSON.parse(fs.readFileSync('dist/bower/bower.json', 'utf8')).version;
 	gutil.log('publishing version ' + version);
 

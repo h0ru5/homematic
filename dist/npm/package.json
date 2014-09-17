@@ -1,6 +1,6 @@
 {
   "name": "homematic",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "client to interface with a homematic CCU via XML-API",
   "main": "homematic.js",
   "repository": {
