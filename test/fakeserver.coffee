@@ -10,7 +10,7 @@ chai.should()
 chai.use require('chai-subset')
 chai.use require('chai-as-promised')
 
-hm = require '../lib/homematic'
+hm = require '../dist/npm/homematic'
 
 ccu='localhost:4000'
 lastprog = -1
