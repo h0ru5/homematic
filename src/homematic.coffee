@@ -51,12 +51,14 @@ module.exports.getPrograms = (addr,raw) ->
 
 module.exports.runProgram = (addr,id) ->
 	rq urlOf(addr,'runprogram', {'program_id' : id })
+		.promise()
 
 module.exports.setState = (addr, ise, value) ->
 	rq urlOf(addr,'statechange', {
 		'ise_id' : ise
 		'new_value': value
 								 })
+		.promise()
 
 module.exports.getState = (addr,id) ->
 	rq urlOf(addr,'state', {
