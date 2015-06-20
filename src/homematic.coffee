@@ -25,9 +25,9 @@ module.exports.parseStates = parseStates = (result) ->
 	res = []
 	result.stateList.device.forEach (dev,devidx) ->
 		res[devidx] = { "id" : dev.$.ise_id, "name" : dev.$.name, channels : [] }
-		dev.channel.forEach (channel,chidx) ->
+		dev.channel?.forEach (channel,chidx) ->
 			res[devidx].channels[chidx] = { "id" : channel.$.ise_id, "name" : channel.$.name , datapoints : []}
-			channel.datapoint.forEach (dp,dpidx) ->
+			channel.datapoint?.forEach (dp,dpidx) ->
 				res[devidx].channels[chidx].datapoints[dpidx] = dp.$;
 	return res
 
@@ -78,9 +78,9 @@ module.exports.getDataPoints = (addr) ->
 	rq(urlOf(addr,'statelist'))
 		.then parseXml
 		.then (stateTree) ->
-			stateTree.stateList.device.forEach (dev) ->
-				dev.channel.forEach (channel) ->
-					channel.datapoint.forEach (dp) ->
+			stateTree.stateList?.device?.forEach (dev) ->
+				dev.channel?.forEach (channel) ->
+					channel.datapoint?.forEach (dp) ->
 						res.push
 							'ccu' : addr
 							'device' : dev.$.name
