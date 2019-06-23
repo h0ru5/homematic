@@ -12,6 +12,7 @@ urlOf = (host,script,vars,method='GET') ->
 				'url' : "http://#{host}/config/xmlapi/#{script}.cgi"
 				'withCredentials' : false
 				'scheme' : 'http' #a bug in browserify?
+				'encoding': 'latin1'
 
 parseXml = (xml) ->
 	xml2js.parseStringAsync xml
